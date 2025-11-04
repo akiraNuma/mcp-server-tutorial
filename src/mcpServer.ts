@@ -56,7 +56,7 @@ export function createMcpServer(): McpServer {
       description: '現在のサーバーステータス情報',
       mimeType: 'application/json',
     },
-    () => {
+    (uri) => {
       const status = {
         timestamp: new Date().toISOString(),
         status: '稼働中',
@@ -65,7 +65,7 @@ export function createMcpServer(): McpServer {
       return {
         contents: [
           {
-            uri: 'customscheme://server_status',
+            uri: uri.href,
             text: JSON.stringify(status, null, 2),
           },
         ],
