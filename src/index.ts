@@ -82,7 +82,6 @@ const mcpHandler = async (req: Request, res: Response) => {
       // Disconnect時の処理
       // クライアントからセッションを終了するためのDELETEリクエストが来た際に発火する
       // https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#session-management
-      // TODO: DELETEメソッドのリクエストに紐づけて処理する必要はなく、DELETEメソッドでTransportのoncloseイベントを通るようになっている旨、本で説明
       transport.onclose = () => {
         console.log('Transport closed for session:', transport?.sessionId)
         const sessionId = transport?.sessionId
@@ -107,13 +106,13 @@ const mcpHandler = async (req: Request, res: Response) => {
     if (!transport) {
       // DELETEリクエストでセッションが終了させようとしている場合
       if (req.method === 'DELETE') {
-        // 200 OKで応答し穏便に終了させる。要調査
+        // 200 OKで応答し穏便に終了させる。
         console.log('Session ended:', sessionId)
         // セッションに紐づくトランスポートを破棄する。存在しないはずだが念の為
         if (sessionId && transports[sessionId]) {
           delete transports[sessionId]
         }
-        res.send(200)
+        res.status(200).send()
         return
       }
 

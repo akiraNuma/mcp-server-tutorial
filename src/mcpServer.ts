@@ -23,26 +23,42 @@ export function createMcpServer(): McpServer {
       },
     },
     (args: { city?: string; datetime?: string }) => {
-      const rand = (max: number) => Math.floor(Math.random() * max)
-      const { city, datetime } = args
-      const descriptions = ['晴れ', '曇り', '雨', '雪']
-      const weatherInfo = {
-        city,
-        temperature: `${15 + rand(20)}°C`,
-        feelsLike: `${15 + rand(20)}°C`,
-        humidity: `${rand(60)}%`,
-        pressure: `${950 + rand(100)} hPa`,
-        description: descriptions[rand(descriptions.length)],
-        windSpeed: `${rand(10)} m/s`,
-        timestamp: new Date(datetime ? datetime : Date.now()).toISOString(),
-      }
-      return {
-        content: [
-          {
-            type: 'text',
-            text: JSON.stringify(weatherInfo, null, 2),
-          },
-        ],
+      try {
+        // 天気情報取得処理
+        const rand = (max: number) => Math.floor(Math.random() * max)
+        const { city, datetime } = args
+        const descriptions = ['晴れ', '曇り', '雨', '雪']
+        const weatherInfo = {
+          city,
+          temperature: `${15 + rand(20)}°C`,
+          feelsLike: `${15 + rand(20)}°C`,
+          humidity: `${rand(60)}%`,
+          pressure: `${950 + rand(100)} hPa`,
+          description: descriptions[rand(descriptions.length)],
+          windSpeed: `${rand(10)} m/s`,
+          timestamp: new Date(datetime ? datetime : Date.now()).toISOString(),
+        }
+
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(weatherInfo, null, 2),
+            },
+          ],
+        }
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error)
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `天気情報の取得中にエラーが発生しました: ${errorMessage}`,
+            },
+          ],
+          isError: true,
+        }
       }
     }
   )
@@ -77,7 +93,7 @@ export function createMcpServer(): McpServer {
   server.registerPrompt(
     'character_speech_converter',
     {
-      title: '語尾変換ツール',
+      title: '語尾変換プロンプト',
       description: 'テキストに指定した語尾を付けて変換します',
       argsSchema: {
         text: z.string().describe('変換したいテキスト'),
