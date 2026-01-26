@@ -7,18 +7,19 @@
 ## 環境情報
 
 ### Node.js バージョン
-- **推奨バージョン**: Node.js 22.20.0 ( `.node-version` で指定)
+
+- **推奨バージョン**: Node.js 22.22.0 ( `.node-version` で指定)
 
 ### バージョン管理ツールでのセットアップ
 
 ```bash
 # nodenv を使用している場合
-nodenv install 22.20.0
-nodenv local 22.20.0
+nodenv install 22.22.0
+nodenv local 22.22.0
 
 # nvm を使用している場合
-nvm install 22.20.0
-nvm use 22.20.0
+nvm install 22.22.0
+nvm use 22.22.0
 ```
 
 ## セットアップ手順
