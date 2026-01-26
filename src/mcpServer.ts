@@ -1,6 +1,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { completable } from '@modelcontextprotocol/sdk/server/completable.js'
 import { z } from 'zod'
+import { registerRedmineTools } from './redmine/tools.js'
 
 export function createMcpServer(): McpServer {
   const server = new McpServer({
@@ -8,7 +9,9 @@ export function createMcpServer(): McpServer {
     version: process.env.MCP_SERVER_VERSION || '1.0.0',
   })
 
-  // ツール
+  // =====================================
+  // ツール（本章サンプル）
+  // =====================================
   server.registerTool(
     'get_weather',
     {
@@ -63,7 +66,9 @@ export function createMcpServer(): McpServer {
     }
   )
 
-  // リソース
+  // =====================================
+  // リソース（本章サンプル）
+  // =====================================
   server.registerResource(
     'status-resource',
     'customscheme://server_status',
@@ -89,7 +94,9 @@ export function createMcpServer(): McpServer {
     }
   )
 
-  // プロンプト
+  // =====================================
+  // プロンプト（本章サンプル）
+  // =====================================
   server.registerPrompt(
     'character_speech_converter',
     {
@@ -124,6 +131,11 @@ export function createMcpServer(): McpServer {
       }
     }
   )
+
+  // =====================================
+  // RedmineAPI ツール（応用編）
+  // =====================================
+  registerRedmineTools(server)
 
   return server
 }

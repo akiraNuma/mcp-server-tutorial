@@ -24,6 +24,8 @@ export function createApp(): express.Application {
         'mcp-session-id',
         'mcp-protocol-version',
         'x-custom-auth-headers', // クライアントサイドから独自の認証ヘッダー等を送信する場合などに追加
+        'x-redmine-url', // （応用編）RedmineAPI用のエンドポイントURL
+        'x-redmine-api-key', // （応用編）RedmineAPI用のAPIキー
       ],
     })
   )
