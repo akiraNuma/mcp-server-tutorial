@@ -11,12 +11,18 @@ services:
       SECRET_KEY_BASE: ${REDMINE_SECRET_KEY_BASE}
       REDMINE_LANG: ${REDMINE_LANG:-ja}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
       - redmine-files:/usr/src/redmine/files
 
   db:
     image: postgres:16
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${REDMINE_DB_USERNAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
       POSTGRES_DB: ${REDMINE_DB_DATABASE}
       POSTGRES_USER: ${REDMINE_DB_USERNAME}
