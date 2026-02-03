@@ -117,9 +117,7 @@ export function registerRedmineTools(server: McpServer): void {
         '指定したプロジェクトの詳細情報を取得します。' +
         'レスポンス: { project: { id, name, identifier, description, status, ... } }',
       inputSchema: {
-        id: z
-          .union([z.number(), z.string()])
-          .describe('プロジェクトIDまたは識別子'),
+        id: z.string().describe('プロジェクトID'),
         include: z
           .string()
           .optional()
@@ -166,21 +164,18 @@ export function registerRedmineTools(server: McpServer): void {
         'Redmineのチケット一覧を取得します。デフォルトではオープン状態のチケットのみ返します。' +
         'レスポンス: { issues: [...], total_count: 条件に合う全チケット数, offset: 開始位置, limit: 取得上限 }。',
       inputSchema: {
-        project_id: z
-          .union([z.number(), z.string()])
-          .optional()
-          .describe('プロジェクトIDまたは識別子でフィルタ'),
+        project_id: z.string().optional().describe('プロジェクトIDでフィルタ'),
         status_id: z
-          .union([z.string(), z.number()])
+          .string()
           .optional()
           .describe(
             'ステータスでフィルタ（open: 未完了, closed: 完了, *: 全て, または数値のステータスID）'
           ),
         assigned_to_id: z
-          .union([z.number(), z.string()])
+          .string()
           .optional()
           .describe('担当者IDでフィルタ（"me" で自分自身）'),
-        tracker_id: z.number().optional().describe('トラッカーIDでフィルタ'),
+        tracker_id: z.string().optional().describe('トラッカーIDでフィルタ'),
         offset: z.number().optional().describe('取得開始位置'),
         limit: z.number().optional().describe('取得するチケット数（最大100）'),
         sort: z
@@ -287,9 +282,7 @@ export function registerRedmineTools(server: McpServer): void {
         '新しいチケットを作成します。' +
         'レスポンス: { issue: { id, subject, ... } } 作成されたチケットの情報',
       inputSchema: {
-        project_id: z
-          .union([z.number(), z.string()])
-          .describe('プロジェクトIDまたは識別子'),
+        project_id: z.string().describe('プロジェクトID'),
         subject: z.string().describe('チケットの題名'),
         description: z.string().optional().describe('チケットの説明'),
         tracker_id: z
@@ -367,7 +360,7 @@ export function registerRedmineTools(server: McpServer): void {
       title: 'チケット更新',
       description:
         '既存のチケットを更新します。' +
-        'レスポンス: { issue: { id, subject, ... } } 更新後のチケット情報',
+        '更新後の内容が必要な場合はget_issueを呼び出してください。',
       inputSchema: {
         id: z.number().describe('更新するチケットID'),
         subject: z.string().optional().describe('チケットの題名'),

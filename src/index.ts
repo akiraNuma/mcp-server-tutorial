@@ -32,7 +32,7 @@ export function createApp(): express.Application {
 
   // ルーティング
   // ルーティングの詳細については以下を参照
-  // https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http
+  // https://modelcontextprotocol.io/specification/2025-11-25/basic/transports#streamable-http
   app.all('/mcp', mcpHandler)
 
   return app
@@ -45,7 +45,7 @@ const transports: { [sessionId: string]: StreamableHTTPServerTransport } = {}
 const mcpHandler = async (req: Request, res: Response) => {
   try {
     // セッション管理の仕組みについては以下を参照
-    // https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#session-management
+    // https://modelcontextprotocol.io/specification/2025-11-25/basic/transports#session-management
     // セッションIDを取得
     const sessionId = req.headers['mcp-session-id'] as string | undefined
     let transport: StreamableHTTPServerTransport | undefined
@@ -83,7 +83,7 @@ const mcpHandler = async (req: Request, res: Response) => {
 
       // Disconnect時の処理
       // クライアントからセッションを終了するためのDELETEリクエストが来た際に発火する
-      // https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#session-management
+      // https://modelcontextprotocol.io/specification/2025-11-25/basic/transports#session-management
       transport.onclose = () => {
         console.log('Transport closed for session:', transport?.sessionId)
         const sessionId = transport?.sessionId

@@ -66,7 +66,7 @@ export interface IssuesResponse extends PaginationInfo {
 
 /** チケット作成パラメータ */
 export interface CreateIssueParams {
-  project_id: number | string
+  project_id: string
   subject: string
   description?: string
   tracker_id?: number
@@ -146,9 +146,7 @@ export class RedmineClient {
 
     if (!response.ok) {
       const errorText = await response.text()
-      throw new Error(
-        `Redmine API error: ${response.status} ${response.statusText} - ${errorText}`
-      )
+      throw new Error(`Redmine API error: ${response.status} - ${errorText}`)
     }
 
     // 204 No Content または空レスポンスの場合
@@ -189,7 +187,7 @@ export class RedmineClient {
    * プロジェクト詳細を取得
    */
   async getProject(
-    id: number | string,
+    id: string,
     include?: string
   ): Promise<{ project: RedmineProject }> {
     const query = new URLSearchParams()
@@ -213,10 +211,10 @@ export class RedmineClient {
     limit?: number
     sort?: string
     include?: string
-    project_id?: number | string
-    tracker_id?: number
-    status_id?: string | number
-    assigned_to_id?: number | string
+    project_id?: string
+    tracker_id?: string
+    status_id?: string
+    assigned_to_id?: string
   }): Promise<IssuesResponse> {
     const query = new URLSearchParams()
     if (params?.offset !== undefined) query.set('offset', String(params.offset))
