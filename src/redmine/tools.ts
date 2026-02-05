@@ -26,8 +26,9 @@ function getHeaderValue(
  * 必須ヘッダー: x-redmine-url, x-redmine-api-key
  * @throws {Error} ヘッダーが不足している場合
  */
+type Headers = Record<string, string | string[] | undefined>
 function getClientFromExtra(extra: {
-  requestInfo?: { headers?: Record<string, string | string[] | undefined> }
+  requestInfo?: { headers?: Headers }
 }): RedmineClient {
   const headers = extra.requestInfo?.headers
   if (!headers) {

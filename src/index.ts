@@ -39,7 +39,7 @@ export function createApp(): express.Application {
 }
 
 // 各セッションに対応するトランスポートを管理するマップ
-const transports: { [sessionId: string]: StreamableHTTPServerTransport } = {}
+const transports: Record<string, StreamableHTTPServerTransport> = {}
 
 // MCPリクエストハンドラー
 const mcpHandler = async (req: Request, res: Response) => {
